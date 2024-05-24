@@ -42,7 +42,7 @@ console.log(details)
 const transporter = nodemailer.createTransport({
     service:'Gmail',
     auth:{
-        email : details.email,
+        user : details.email,  // changer are here **************
         pass : details.pass
     }
 })
