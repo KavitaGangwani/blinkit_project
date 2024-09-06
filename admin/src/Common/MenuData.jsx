@@ -24,6 +24,15 @@ export const data = [
     {
         id:3,
         icon:<FontAwesomeIcon icon={faBook}/>,
+        uid:"Suppliers",
+        sub1:"Add Supplier",
+        sub2:"View Products",
+        link1:'/addSupplier',
+        link2:'/viewProduct',
+    },
+    {
+        id:4,
+        icon:<FontAwesomeIcon icon={faBook}/>,
         uid:"Products",
         sub1:"Add products",
         sub2:"View Products",
@@ -31,7 +40,7 @@ export const data = [
         link2:'/viewProduct',
     },
     {
-        id:4,
+        id:5,
         icon:<FontAwesomeIcon icon={faUsers}/>,
         uid:"User",
         sub1:"View User",

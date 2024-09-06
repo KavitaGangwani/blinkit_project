@@ -28,13 +28,12 @@ function Menuitems() {
        
         return(
          
-
           <div key={i} className='w-full  mb-2'>
             <div  className={` group flex items-center justify-center relative hover:bg-[#4B49AC] hover:text-white   duration-[0.3s] py-3 px-0 text-center  `}>
             <h4 className='text-[20px] text-gray-600 group-hover:text-white '>{v.icon}</h4>
 
             
-            <ul  className={`text-white group-hover:visible group-hover:opacity-[1] w-[220px] invisible opacity-0 z-[99] text-[14px] min-h-[100px] ease-in-out px-[50px] duration-[0.8s] absolute left-[100%] top-0 bg-[#4B49AC]`}>
+            <ul  className={`text-white group-hover:visible group-hover:opacity-[1] w-[220px] invisible opacity-0 z-[99] text-[14px] min-h-[100px] ease-in-out px-[25px] duration-[0.8s] absolute left-[100%] top-0 bg-[#4B49AC]`}>
               
             <h4 className='text-[15px] text-left pb-3 pt-2 text-white'>{v.uid}</h4>
 
@@ -62,7 +61,7 @@ function Menuitems() {
               
               <FontAwesomeIcon icon={v.id==menu ? faAngleDown : faAngleRight}/>
               </div>
-              <ul  className={`text-white text-[14px] ease-in-out px-[50px] duration-[0.8s] ${v.id==menu ? ' py-3 h-[90px] opacity-[1] visible  bg-[#4B49AC]':'opacity-0 h-0 invisible'}`}>
+              <ul  className={`text-white text-[14px] ease-in-out px-[25px] duration-[0.8s] ${v.id==menu ? ' py-3 opacity-[1] visible  bg-[#4B49AC]':'opacity-0 h-0 invisible'}`}>
               <Link to={v.link1}> <li className='flex items-center mb-2'><FontAwesomeIcon icon={faCircle} className='text-[8px] pr-3'/>{v.sub1}</li></Link>
               <Link to={v.link2}><li className='flex items-center '><FontAwesomeIcon icon={v.sub2=="" ? " " : faCircle}  className='text-[8px] pr-3'/>{v.sub2=="" ? " " : v.sub2 }</li></Link>
               </ul>

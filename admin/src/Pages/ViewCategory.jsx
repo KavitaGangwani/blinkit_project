@@ -4,6 +4,8 @@ import Header from '../Common/Header';
 import Sidebar from '../Common/Sidebar';
 import Footer from '../Common/Footer';
 import { useNavigate } from 'react-router';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faEdit,faXmark} from '@fortawesome/free-solid-svg-icons'
 
 function ViewCategory() {
   let nav = useNavigate();
@@ -18,6 +20,62 @@ function ViewCategory() {
     console.log(response.data)
     if (response.status) {
       setCategory(response.data)
+    }
+
+
+  }
+
+  const handleUpdate = (e)=>{
+    const id = e.target.value
+    nav(`/addCategory/${id}`)
+  }
+
+  const handleSubUpdate = (e)=>{
+    let subname = e.target.dataset.value
+    console.log(subname)
+  
+    nav(`/addSubCategory/${subname}`)
+
+  }
+
+  const handleSubDelete = async (e)=>{
+
+    let subname = e.target.dataset.value
+    console.log(subname)
+    let response = await fetch(`http://localhost:4001/deleteSubCat/${subname}`, {
+      method: 'DELETE',
+      headers: {
+        "Content-type": "application/json"
+      },
+      body:JSON.stringify(category)
+    });
+    response = await response.json();
+    console.log(response)
+    if (response.status) {
+     alert('deleted')
+     fetchCat()
+    }
+
+
+  }
+
+
+
+  const handleDelete = async(e)=>{
+    const id = e.target.value
+    console.log(id)
+    let response = await fetch(`http://localhost:4001/deleteCat/${id}`, {
+      method: 'DELETE',
+      headers: {
+        "Content-type": "application/json"
+      },
+      body:JSON.stringify(category)
+    });
+    response = await response.json();
+    console.log(response)
+    if (response.status) {
+     alert('deleted')
+     fetchCat()
     }
 
 
@@ -59,19 +117,37 @@ function ViewCategory() {
                   <th>Status</th>
                   <th>Action</th>
                 </tr>
-                {category.map((v, i) => {
+                {category.map((v, pi) => {
                   return(
                   <tr>
-                    <td>{i+1}</td>
+                    <td>{pi+1}</td>
                     <td><label htmlFor=""><input type="radio" /></label></td>
                     <td>{v.categoryName} </td>
-                    <td>...</td>
-                    <td> <img height={100} src={v.categoryImage} alt="" /></td>
-                    <td><button className=''> {v.categoryStatus}</button></td>
+                    <td>{(v.subcategories).map((elem,i)=>{
+                      
+                      return(
+                      <p className='flex justify-between'>{elem} 
+                      <span className='text-slate-400 '>
+                        <label  for={`up${pi}${i}`}   >
+                        <input type='text' onClick={handleSubUpdate}  className='hidden' id={`up${pi}${i}`} data-value={elem}  />
+                         
+                           <FontAwesomeIcon className='m-1' icon={faEdit}  />
+                        </label>
+                       
+                        <label htmlFor="" for={`del-${pi}${i}`} > 
+                        <input type='text' onClick={handleSubDelete} className='hidden' data-value={elem}  id={`del-${pi}${i}`} />
+                        <FontAwesomeIcon  className='m-1' icon={faXmark} /></label>
+                       
+                      </span>
+                      </p>
+                    )
+                    })}</td>
+                    <td> <img width={120} src={v.categoryImage} alt="" /></td>
+                    <td><button className=''> {`${v.categoryStatus}`}</button></td>
                     <td className='text-center'>
 
-                      <button className='bg-green-500 text-white px-5 mr-5 py-1'>Edit</button>
-                      <button className='bg-red-400 text-white px-5 py-1'>Delete</button>
+                      <button className='bg-green-500 text-white px-5 mr-5 py-1' value={v._id} onClick={handleUpdate}>Edit</button>
+                      <button className='bg-red-400 text-white px-5 py-1' value={v._id} onClick={handleDelete}>Delete</button>
 
 
                     </td>

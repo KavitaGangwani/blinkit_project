@@ -1,0 +1,41 @@
+ `{...v._doc,categoryImage : `${req.protocol}://${req.get('host')}/uploads/${cat.categoryImage}`}/
+
+
+
+   categories.forEach((v,i)=>{
+
+            let catmap = cat.forEach((element,index)=>{
+
+                if(element.categoryName.categoryName === v.categoryName ){
+                   Object.values()
+                }
+
+            })  
+
+        })
+
+
+
+        <OtpInput 
+                                        containerStyle={' w-[330px] m-auto grid grid-cols-4 '}
+                                        value={otp}
+                                        onChange={matchOtp}
+                                        numInputs={4}
+                                        shouldAutoFocus = {true}
+                                        inputStyle={'px-8 py-3 text-[22px] m-2 focus:border-slate-500 border outline-none rounded-xl '}
+                                        
+                                    
+                                        renderInput={(props,index) => <input {...props}
+                                        key={index}
+                                        style={{
+                                            width: '4rem',
+                                            height: '4rem',
+                                            fontSize: '22px',
+                                            color: 'black',
+                                            textAlign: 'center',
+                                            border: '1px solid #ccc',
+                                            borderRadius: '4px',
+                                            margin: '0.5rem'
+                                        }}
+                                       
+                                         />}/>

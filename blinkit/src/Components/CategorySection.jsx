@@ -1,38 +1,24 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import Catcard from './Cards/Catcard'
 import { useEffect,useState } from 'react'
+import { category } from '../Context/CategoryContext'
 
 function CategorySection() {
 
-  let [category,setCategory]= useState([])
-  
-  // FETCHING CATEGORIES 
-  const fetchCat = async()=>{
-    let response =  await fetch('http://localhost:4001/viewCat');
-    response = await response.json();
-    console.log(response.data)
-  console.log(typeof response.data)
-    if(response.status){
-      console.log('first')
-      setCategory(response.data)
-    }
-    
-  }
-
-   
-
-  useEffect(()=>{
-
-    fetchCat();
-
-  },[])
+  let {categories,setCategories}= useContext(category);
   
 
   return (
     <>
-    <div  className='w-[1280px] border m-auto p-2 '>
-        <Catcard/>
+    <div className='w-[1280px] m-auto '>
+    <div  className=' flex flex-wrap '>
+      {categories.map((v,i)=>{
+        return <Catcard image = {v.categoryImage} catName = {v.categoryName} key={v._id} />
+      })}
+        
     </div>
+    </div>
+    
     </> 
   )
 }

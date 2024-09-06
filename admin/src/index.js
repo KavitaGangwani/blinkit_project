@@ -19,6 +19,7 @@ import ViewCategory from './Pages/ViewCategory';
 import AddSubCategory from './Pages/AddSubCategory';
 import AddProduct from './Pages/AddProduct';
 import ViewProduct from './Pages/ViewProduct';
+import AddSupplier from './Pages/AddSupplier';
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -34,7 +35,7 @@ const router = createBrowserRouter([
   },
   
   {
-    path:"addCategory",
+    path:"addCategory/:id?",
     element:<AddCategory/>
   },
   {
@@ -42,7 +43,7 @@ const router = createBrowserRouter([
     element:<ViewCategory/>
   },
   {
-    path:"addSubCategory",
+    path:"addSubCategory/:subname?",
     element:<AddSubCategory/>
   },
   // {
@@ -56,6 +57,10 @@ const router = createBrowserRouter([
   {
     path:"viewProduct",
     element:<ViewProduct/>
+  },
+  {
+    path:"addSupplier",
+    element:<AddSupplier/>
   },
   
  

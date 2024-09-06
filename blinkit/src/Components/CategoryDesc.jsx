@@ -1,10 +1,10 @@
 import React from 'react'
 
-function CategoryDesc() {
+function CategoryDesc(props) {
   return (
     <>
     <div className='w-[1280px] border m-auto p-6'>
-      <h3 className='font-semibold m-3 text-[20px]'>SubCategory name</h3>
+      <h3 className='font-semibold m-3 text-[20px]'>{}</h3>
       <p className='m-3 text-slate-500'>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Animi nulla amet ipsam aspernatur officiis illo quo autem. Ad minima quo eveniet alias odit? Ipsam nihil amet eligendi corrupti aperiam. Eos?</p> 
 
       <h5 className='mx-3 my-1  text-slate-500 font-bold text-[14px]' >Question</h5>

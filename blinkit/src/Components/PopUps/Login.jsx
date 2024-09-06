@@ -1,12 +1,9 @@
-import React, { useContext, useRef, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faArrowLeft, faCircleCheck } from '@fortawesome/free-solid-svg-icons'
+import { faArrowLeft, faCircleCheck, faVolumeHigh } from '@fortawesome/free-solid-svg-icons'
 import applogo from './../../images/app_logo.svg'
 import { login } from '../../Context/LoginContext'
 import OtpInput from 'react-otp-input';
-
-import OTPInput, { ResendOTP } from "otp-input-react";
-
 
 
 function Login() {
@@ -15,13 +12,48 @@ function Login() {
     //   console.log(isLogin,setLogin)
 
     let [noEmailEnter, setEmailEnter] = useState(true)
+    const [otp, setOtp] = useState('');
+    let [timer,settimer] = useState(30)
+
+    // LOADING 
+    let [loading, setloading] =useState(false)
 
 
-    const [otp, setOtp] = useState(' ');
+
+
     let [formData, SetFormData] = useState({})
-    console.log(otp, setOtp)
+
+
+
+    const matchOtp =async  (e) => {
+     setOtp(e)
+     console.log('enyered otp is ', e)
+     console.log(otp)
+     SetFormData({...formData,'otp' : otp })
+
+     try {
+        let response = await fetch('http://localhost:4001/loginotp', {
+            method: 'POST',
+            headers: { 'Content-type': 'application/json' },
+            body: JSON.stringify(formData)
+        })
+
+        response = await response.json()
+        console.log(response)
+    } catch (error) {
+        console.error('Fetching error:', error);
+
+    }
+}
+    console.log(formData)
+
+
+
+
 
     const bg = useRef()
+
+
 
     const emailSubmit = (e) => {
         e.preventDefault()
@@ -31,21 +63,40 @@ function Login() {
     }
 
     const generateOtp = async () => {
+        setloading(true)
+        try {
+            let response = await fetch('http://localhost:4001/generateotp', {
+                method: 'POST',
+                headers: { 'Content-type': 'application/json' },
+                body: JSON.stringify(formData)
+            })
+    
+            response = await response.json()
+           console.log(response)
 
-        let response = await fetch('http://localhost:4001/generateotp', {
-            method: 'POST',
-            headers: { 'Content-type': 'application/json' },
-            body: JSON.stringify(formData)
-        })
+        //    let timerInterval = setInterval(() => {
+        //     console.log('running')
+        //    settimer((prev)=>(prev-1))
+        //    console.log(timer)
+            
+        //    }, 1000);
+           
 
-        response = await response.json()
-        console.log(response)
+          
+        } catch (error) {
+            console.error('Fetching error:', error);
+            
+        }finally {
+            setloading(false);
+        }
+
+        
+       
 
     }
 
-    const matchOtp = (e) => {
-        console.log(e.target)
-    }
+
+    
 
 
 
@@ -75,7 +126,7 @@ function Login() {
                                     name='email'
                                     value={formData.email}
                                     onChange={(e) => { SetFormData({ ...formData, email: e.target.value }) }} />
-                                <button type='submit' className='w-full h-[50px] mt-4 rounded-xl bg-[#9c9c9c] text-[white]' onClick={generateOtp}>Continue</button>
+                                <button type='submit' className='w-full h-[50px] mt-4 rounded-xl bg-[#9c9c9c] text-[white]' onClick={generateOtp}>{loading?"...":'Continue'}</button>
                             </form>
                         </div>
                         <div className='bg-[#fbfbfb] text-center text-[12px] p-[8px_0px]'>
@@ -95,26 +146,28 @@ function Login() {
                         </div>
                         <div className='w-[270px] h-[56.8px] m-auto my-2 text-center'>
                             <p >We have sent a verification code to</p>
-                            <p className='font-semibold text-[20px]'>(entered email)</p>
+                            <p className='font-semibold text-[20px]'>{formData.email}</p>
 
                         </div>
                         <div className='w-[330px] h-[115px] my-5 mx-auto text-center' >
                             <form action="" className='flex flex-col '>
-                                
-                                    <OtpInput 
-                                        containerStyle={' w-[330px] m-auto grid grid-cols-4 '}
-                                        value={otp}
-                                        onChange={matchOtp}
-                                        numInputs={4}
-                                        shouldAutoFocus = {true}
-                                        inputStyle={'px-8 py-3 text-[22px] m-2 focus:border-slate-500 border outline-none rounded-xl '}
-                                    
-                                        renderInput={(props) => <input name='otp' value={otp} {...props} />}/>
+                                 
+                                <OtpInput
+                                    value={otp}
+                                    onChange={matchOtp}
+                                    numInputs={4}
+                                    containerStyle=''
+                                    renderSeparator={<span> </span>}
+                                    skipDefaultStyles ={true}
+                                    inputStyle='px-6 m-2 py-3 text-[22px] text-[black] font-bold  focus:border-slate-500 border outline-none rounded-xl '
+                                    renderInput={(props) => <input {...props} style={{width: '65px'}} />}
+                                />
 
-                                {/* <OTPInput className='w-[330px] h-[50px] border m-auto ' value={otp} onChange={setOtp} autoFocus OTPLength={4} otpType="number" disabled={false}inputClassName = 'px-8 py-3 text-[22px] m-2 focus:border-slate-500 border outline-none rounded-xl' style = {{color:'black'}} inputStyles = {{color:'black'}}/> */}
+
+
 
                             </form>
-                            <p className='text-slate-400 my-2'>Resend code (in xy seconds) </p>
+                            <p className='text-slate-400 my-2' >Resend code (in {timer} seconds) </p>
                         </div>
 
 

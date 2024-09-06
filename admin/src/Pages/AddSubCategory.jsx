@@ -7,12 +7,111 @@ import { mainContext } from '../Context'
 import prev from '../img/generic-image-file-icon-hi.png'
 import { useNavigate, useParams } from 'react-router'
 
+
 // import AdminForms from '../Common/AdminForms'
 
 function AddSubCategory() {
 
   let nav = useNavigate();
   let {changemenu} = useContext(mainContext);
+
+  let [category, setCategory] = useState([])
+  const [data,setData] = useState({})
+
+  let {subname} = useParams();
+  // console.log(subname)
+
+  const bySubName = async()=>{
+
+    let response = await fetch(`http://localhost:4001/viewSubCatbysub/${subname}`)
+    response = await response.json()
+    console.log(response)
+    setData(response.data)
+    
+    
+    
+    
+  }
+  useEffect(()=>{
+    if(subname){
+      
+      bySubName()
+      
+    
+      
+      
+      
+    }
+
+  },[])
+
+  // useEffect(()=>{
+  //   console.log('changes in data')
+    
+  // },[data])
+  
+
+
+  const fetchCat = async () => {
+    let response = await fetch('http://localhost:4001/viewCat');
+  response = await response.json();
+    if (response.status) {
+      setCategory(response.data)
+    }
+  }
+
+
+ 
+
+  const addSubCat = async(e)=>{
+    e.preventDefault();
+
+    if(!subname){
+      let response = await fetch('http://localhost:4001/addSubCat', {
+        method: 'POST',
+        headers: { 'Content-type': 'application/json' },
+              body: JSON.stringify(data)
+      });
+  
+      response = await response.json()
+      console.log(response)
+      alert('subcategory added')
+
+    }
+    else{
+      let response = await fetch(`http://localhost:4001/updateSubCat/${subname}`, {
+        method: 'PUT',
+        headers: { 'Content-type': 'application/json' },
+              body: JSON.stringify(data)
+      });
+  
+      response = await response.json()
+      console.log(response)
+      if(response.status){
+        alert('subcategory updated')
+        nav('/viewCategory')
+      }
+     
+
+    }
+    
+
+  }
+  
+ 
+
+  useEffect(() => {
+
+    fetchCat();
+
+  }, [])
+
+  let [prevCat,setprevCat] =useState('')
+
+  console.log(data)
+  
+ 
+
  
   return (
     <div>
@@ -29,17 +128,26 @@ function AddSubCategory() {
         </h1>
         <div className=''>
           <div className='bg-white w-[100%] mb-[50px] p-4 h-full rounded-[20px]'>
-          <form action="" >
+          <form  onSubmit={addSubCat} >
             Category Name
-            <select name="coursescat" id="" className='w-full border my-3 border-gray-400 h-[40px] outline-none rounded-md'>
-              <option value="" className=''>php</option>
+            <select   id="" name="categoryName"  className='w-full border my-3 border-gray-400 h-[40px] outline-none rounded-md' value = {data.categoryName}  onChange={(e)=>{setData({...data,categoryName: e.target.value })}} >
+              {category.map((v,i)=>{
+                // console.log(v)
+                return(
+                  <option  key={i} value={v._id}  >{v.categoryName}</option>
+                )
+
+              })}
+              
             </select>
             Sub-Category Name
-            <input type="text" name='coursesName' className='border px-4 border-gray-400 w-full h-[40px] outline-none rounded-md mb-3 mt-2 '  />
+            <input type="text" name='Subcategory' className='border px-4 border-gray-400 w-full h-[40px] outline-none rounded-md mb-3 mt-2 ' 
+            value={data.Subcategory}
+            onChange={(e)=>{setData({...data,Subcategory: e.target.value })}}  />
             
             <div className='flex items-center mt-5  mb-8 gap-2'>
-            <input type="radio" name='courseStatus' value={true} className='mx-2 w-[20px] h-[20px] text-[20px]'  /> Active
-            <input type="radio" name='courseStatus'  value={false} className='mx-2 w-[20px] h-[20px] text-[20px]'  /> Deactive
+            <input type="radio" name='SubcategoryStatus' checked={(!data.categoryStatus)} value={true} className='mx-2 w-[20px] h-[20px] text-[20px]' onChange={(e)=>{setData({...data,SubcategoryStatus: e.target.value })}}  /> Active
+            <input type="radio" name='SubcategoryStatus' checked={(data.categoryStatus)} value={false} className='mx-2 w-[20px] h-[20px] text-[20px]'  onChange={(e)=>{setData({...data,SubcategoryStatus: e.target.value })}}   /> Deactive
             </div>
             
             <input type="submit" className='bg-[#4B49AC] mb-8 mt-7 text-[18px] px-8 py-2 rounded-[10px] text-white' />

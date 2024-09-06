@@ -4,12 +4,15 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCartShopping, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'
 import { login } from '../Context/LoginContext'
 import Login from './PopUps/Login'
+import Cart from './PopUps/Cart'
+import { useNavigate } from 'react-router-dom'
 
 
 function Header() {
 
   let {isLogin,setLogin} = useContext(login)
   // console.log(isLogin,setLogin)
+   const nav = useNavigate()
 
   
    
@@ -21,7 +24,9 @@ function Header() {
     <>
       <div className="grid grid-cols-[181px_322px_702px_163px_163px] h-[86px] w-100 border-b border-inherit ">
         {/* LOGO */}
-        <div className=' border-e border-inherit hover:bg-[#F8F8F8] flex items-center justify-center '>
+        <div className=' border-e border-inherit hover:bg-[#F8F8F8] flex items-center justify-center ' onClick={()=>{
+          nav('/')
+        }}>
           <img src={logo} width={134} height={30} alt="" />
         </div>
         {/* DELIVERY */}
@@ -59,6 +64,8 @@ function Header() {
           </button>
         </div>
       </div>
+
+      
     </>
   )
 }
